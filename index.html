@@ -1367,6 +1367,7 @@ function save() {
   closeModal();
   renderAll();
   toast(msg, 'ok');
+  autoSync(editId ? 'updated' : 'added');
 }
 
 function deleteWarranty(id) {
@@ -1374,6 +1375,7 @@ function deleteWarranty(id) {
   data = data.filter(function(w){ return w.id !== id; });
   localStorage.setItem('takusu_w', JSON.stringify(data));
   toast('Deleted', 'err'); renderAll();
+  autoSync('deleted');
 }
 
 // Event delegation for card buttons
@@ -1580,6 +1582,35 @@ async function ensureHeaders(sheetId) {
       values: [SHEET_HEADERS]
     });
   }
+}
+
+// ---- Auto Sync ----
+async function autoSync(action) {
+  if (!gsToken) return; // not connected, skip silently
+  if (gsSyncing) return;
+  // Small delay so toast from save/delete shows first
+  setTimeout(async function() {
+    try {
+      gsSyncing = true;
+      // show syncing dot quietly (don't overwrite current UI state labels)
+      const dot = document.getElementById('gsync-dot');
+      dot.className = 'gsync-dot syncing';
+      const sheetId = await ensureSheet();
+      await ensureHeaders(sheetId);
+      await sheetsRequest('POST', '/' + sheetId + '/values/' + SHEET_NAME + '!A2:Z:clear', null);
+      if (data.length) {
+        const rows = data.map(w => SHEET_HEADERS.map(k => w[k] || ''));
+        await sheetsRequest('PUT', '/' + sheetId + '/values/' + SHEET_NAME + '!A2?valueInputOption=RAW', { values: rows });
+      }
+      toast('☁️ Auto-synced to Google Sheets', 'ok');
+      dot.className = 'gsync-dot connected';
+    } catch(e) {
+      toast('Auto-sync failed: ' + e.message, 'err');
+      document.getElementById('gsync-dot').className = 'gsync-dot error';
+    } finally {
+      gsSyncing = false;
+    }
+  }, 600);
 }
 
 // ---- Push ----

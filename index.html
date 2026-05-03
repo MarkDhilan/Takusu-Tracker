@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Takusu — Warranty Admin Console</title>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -692,120 +691,7 @@
     .hd-admin-tag { display: none; }
   }
 
-  /* ===== GOOGLE SYNC ===== */
-  .gsync-bar {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 18px;
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  }
-  .gsync-status {
-    display: flex; align-items: center; gap: 7px; flex: 1; min-width: 0;
-  }
-  .gsync-dot {
-    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    background: var(--muted2);
-  }
-  .gsync-dot.connected { background: var(--teal); box-shadow: 0 0 6px rgba(45,212,191,.5); animation: blink 2.5s infinite; }
-  .gsync-dot.syncing   { background: var(--gold); box-shadow: 0 0 6px rgba(245,158,11,.5); animation: blink .7s infinite; }
-  .gsync-dot.error     { background: var(--danger); }
-  .gsync-label {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .gsync-label strong { color: var(--accent2); }
-  .gsync-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .gsync-btn {
-    background: none; border: 1px solid var(--border);
-    color: var(--muted); font-family: 'DM Mono', monospace;
-    font-size: 10px; padding: 5px 12px; border-radius: 7px;
-    cursor: pointer; transition: all .2s; white-space: nowrap;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .gsync-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(139,92,246,.08); }
-  .gsync-btn.primary { border-color: var(--teal); color: var(--teal); }
-  .gsync-btn.primary:hover { background: rgba(45,212,191,.08); }
-  .gsync-btn.danger { border-color: var(--danger); color: var(--danger); }
-  .gsync-btn.danger:hover { background: rgba(244,63,94,.08); }
-  .gsync-btn:disabled { opacity: .4; cursor: not-allowed; }
 
-  /* Setup modal */
-  .setup-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.85);
-    backdrop-filter: blur(10px);
-    z-index: 400;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity .25s;
-  }
-  .setup-overlay.open { opacity: 1; pointer-events: all; }
-  .setup-modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    width: 520px; max-width: calc(100vw - 24px);
-    max-height: 90vh; overflow-y: auto;
-    position: relative; padding: 28px 28px 24px;
-    transform: scale(.95); transition: transform .25s cubic-bezier(0.16,1,0.3,1);
-  }
-  .setup-overlay.open .setup-modal { transform: scale(1); }
-  .setup-modal::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335);
-    border-radius: 20px 20px 0 0;
-  }
-  .setup-title { font-family: 'Cinzel', serif; font-size: 16px; color: var(--accent2); margin-bottom: 4px; }
-  .setup-sub   { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 20px; }
-  .setup-step  { margin-bottom: 16px; }
-  .setup-step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    font-size: 10px; font-weight: 700; color: #fff; margin-right: 8px; flex-shrink: 0;
-  }
-  .setup-step-label { font-size: 12px; font-weight: 600; color: var(--text); display: flex; align-items: center; margin-bottom: 6px; }
-  .setup-step-desc  { font-size: 11px; color: var(--muted); line-height: 1.6; margin-left: 28px; }
-  .setup-step-desc a { color: var(--accent2); text-decoration: none; }
-  .setup-step-desc a:hover { text-decoration: underline; }
-  .setup-input-wrap { margin-left: 28px; margin-top: 8px; }
-  .setup-input {
-    width: 100%; background: var(--bg); border: 1px solid var(--border);
-    border-radius: 9px; padding: 10px 13px; color: var(--text);
-    font-family: 'DM Mono', monospace; font-size: 12px; outline: none;
-    transition: border-color .2s;
-  }
-  .setup-input:focus { border-color: var(--accent); }
-  .setup-input::placeholder { color: var(--muted2); }
-  .setup-input-hint { font-size: 10px; color: var(--muted2); font-family: 'DM Mono', monospace; margin-top: 5px; }
-  .setup-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-  .setup-save-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
-    color: #fff; border: none; border-radius: 9px;
-    padding: 9px 22px; font-family: 'Outfit', sans-serif;
-    font-weight: 700; font-size: 13px; cursor: pointer;
-    box-shadow: 0 4px 16px rgba(139,92,246,.3); transition: all .2s;
-  }
-  .setup-save-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(139,92,246,.45); }
-  .setup-cancel-btn {
-    background: none; border: 1px solid var(--border); color: var(--muted);
-    font-size: 13px; padding: 9px 16px; border-radius: 9px;
-    cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s;
-  }
-  .setup-cancel-btn:hover { border-color: var(--muted); color: var(--text); }
-
-  .google-btn {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: #fff; color: #3c3c3c; border: none; border-radius: 9px;
-    padding: 10px 20px; font-family: 'Outfit', sans-serif;
-    font-weight: 600; font-size: 13px; cursor: pointer; width: 100%;
-    box-shadow: 0 2px 8px rgba(0,0,0,.25); transition: all .2s; margin-top: 12px;
-  }
-  .google-btn:hover { box-shadow: 0 4px 16px rgba(0,0,0,.35); transform: translateY(-1px); }
-  .google-btn svg { flex-shrink: 0; }
-  .spin { animation: spin .8s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
 </style>
 </head>
@@ -904,17 +790,6 @@
     </div>
 
 
-  <!-- GOOGLE SYNC BAR -->
-  <div class="gsync-bar" id="gsync-bar">
-    <div class="gsync-status">
-      <div class="gsync-dot" id="gsync-dot"></div>
-      <div class="gsync-label" id="gsync-label">Google Sync not configured</div>
-    </div>
-    <div class="gsync-actions" id="gsync-actions">
-      <button class="gsync-btn" onclick="openSetup()">⚙ Setup</button>
-    </div>
-  </div>
-
     <div class="cards" id="cards-list"></div>
   </main>
 </div>
@@ -993,57 +868,6 @@
   </div>
 </div>
 
-
-<!-- GOOGLE SYNC SETUP MODAL -->
-<div class="setup-overlay" id="setup-overlay">
-  <div class="setup-modal">
-    <div class="setup-title">📊 Google Sheets Sync</div>
-    <div class="setup-sub">// connect your Google account to sync warranty data</div>
-
-    <div class="setup-step">
-      <div class="setup-step-label"><span class="setup-step-num">1</span> Create a Google Cloud Project</div>
-      <div class="setup-step-desc">
-        Go to <a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a> →
-        New Project → Enable <strong>Google Sheets API</strong> &amp; <strong>Google Drive API</strong>.
-      </div>
-    </div>
-
-    <div class="setup-step">
-      <div class="setup-step-label"><span class="setup-step-num">2</span> Create OAuth 2.0 Client ID</div>
-      <div class="setup-step-desc">
-        APIs &amp; Services → Credentials → Create Credentials → OAuth Client ID →
-        Web Application. Add <strong>this page's URL</strong> as an Authorized JavaScript Origin.
-        Add <strong>cordovadhilan@gmail.com</strong> as a Test User.
-      </div>
-    </div>
-
-    <div class="setup-step">
-      <div class="setup-step-label"><span class="setup-step-num">3</span> Paste your Client ID below</div>
-      <div class="setup-input-wrap">
-        <input class="setup-input" type="text" id="gs-client-id" placeholder="xxxxx.apps.googleusercontent.com">
-        <div class="setup-input-hint">Found in: Credentials → your OAuth 2.0 Client → Client ID</div>
-      </div>
-    </div>
-
-    <div class="setup-step">
-      <div class="setup-step-label"><span class="setup-step-num">4</span> Paste your Google Sheet ID (optional)</div>
-      <div class="setup-step-desc">
-        Create a blank Google Sheet and paste its ID from the URL:<br>
-        <code style="color:var(--accent2);font-size:10px">docs.google.com/spreadsheets/d/<strong>[SHEET-ID]</strong>/edit</code><br>
-        Leave blank to auto-create a new sheet on first sync.
-      </div>
-      <div class="setup-input-wrap">
-        <input class="setup-input" type="text" id="gs-sheet-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
-        <div class="setup-input-hint">Optional — auto-created if left blank</div>
-      </div>
-    </div>
-
-    <div class="setup-footer">
-      <button class="setup-cancel-btn" onclick="closeSetup()">Cancel</button>
-      <button class="setup-save-btn" onclick="saveSetup()">Save &amp; Connect →</button>
-    </div>
-  </div>
-</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1367,7 +1191,6 @@ function save() {
   closeModal();
   renderAll();
   toast(msg, 'ok');
-  autoSync(editId ? 'updated' : 'added');
 }
 
 function deleteWarranty(id) {
@@ -1375,7 +1198,6 @@ function deleteWarranty(id) {
   data = data.filter(function(w){ return w.id !== id; });
   localStorage.setItem('takusu_w', JSON.stringify(data));
   toast('Deleted', 'err'); renderAll();
-  autoSync('deleted');
 }
 
 // Event delegation for card buttons
@@ -1416,269 +1238,6 @@ if (!localStorage.getItem('takusu_initialized')) {
 
 // Init with "All" highlighted
 updateStatHighlight();
-
-// ===== GOOGLE SHEETS SYNC =====
-const ALLOWED_EMAIL   = 'cordovadhilan@gmail.com';
-const GS_CONFIG_KEY   = 'takusu_gs_config';
-const SCOPES          = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
-const SHEET_NAME      = 'Warranties';
-const SHEET_HEADERS   = ['id','acc','contact','prod','price','plan','start','end','notes'];
-
-let gsConfig   = JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || 'null');
-let gsToken    = null;  // current OAuth access token
-let gsClient   = null;  // Google token client
-let gsSyncing  = false;
-
-// ---- Setup modal ----
-function openSetup() {
-  if (gsConfig) {
-    document.getElementById('gs-client-id').value = gsConfig.clientId || '';
-    document.getElementById('gs-sheet-id').value  = gsConfig.sheetId  || '';
-  }
-  document.getElementById('setup-overlay').classList.add('open');
-}
-function closeSetup() { document.getElementById('setup-overlay').classList.remove('open'); }
-document.getElementById('setup-overlay').addEventListener('click', function(e){
-  if (e.target === e.currentTarget) closeSetup();
-});
-
-function saveSetup() {
-  const clientId = document.getElementById('gs-client-id').value.trim();
-  const sheetId  = document.getElementById('gs-sheet-id').value.trim();
-  if (!clientId) { toast('Client ID is required', 'err'); return; }
-  gsConfig = { clientId, sheetId };
-  localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(gsConfig));
-  closeSetup();
-  initGoogleClient();
-  toast('✅ Config saved — connecting to Google...', 'ok');
-}
-
-// ---- Google client init ----
-function initGoogleClient() {
-  if (!gsConfig || !gsConfig.clientId) { updateSyncUI('idle'); return; }
-  if (typeof google === 'undefined') { setTimeout(initGoogleClient, 500); return; }
-  gsClient = google.accounts.oauth2.initTokenClient({
-    client_id: gsConfig.clientId,
-    scope: SCOPES,
-    callback: handleTokenResponse,
-  });
-  updateSyncUI('ready');
-}
-
-function handleTokenResponse(resp) {
-  if (resp.error) {
-    toast('Google auth error: ' + resp.error, 'err');
-    updateSyncUI('error');
-    return;
-  }
-  gsToken = resp.access_token;
-  // Check email matches
-  fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: 'Bearer ' + gsToken }
-  })
-  .then(r => r.json())
-  .then(info => {
-    if (info.email !== ALLOWED_EMAIL) {
-      gsToken = null;
-      toast('⛔ Access denied — only ' + ALLOWED_EMAIL + ' can sync', 'err');
-      updateSyncUI('error');
-      return;
-    }
-    toast('✅ Connected as ' + info.email, 'ok');
-    updateSyncUI('connected', info.email);
-    // Auto-sync after login
-    syncToSheets();
-  })
-  .catch(() => { toast('Could not verify Google account', 'err'); updateSyncUI('error'); });
-}
-
-function googleSignIn() {
-  if (!gsClient) { toast('Configure Google Sync first (⚙ Setup)', 'err'); return; }
-  gsClient.requestAccessToken();
-}
-
-function googleSignOut() {
-  if (gsToken) google.accounts.oauth2.revoke(gsToken);
-  gsToken = null;
-  updateSyncUI('ready');
-  toast('Signed out of Google', 'ok');
-}
-
-// ---- UI state ----
-function updateSyncUI(state, email) {
-  const dot    = document.getElementById('gsync-dot');
-  const label  = document.getElementById('gsync-label');
-  const actions = document.getElementById('gsync-actions');
-
-  dot.className = 'gsync-dot';
-  if (state === 'idle') {
-    label.innerHTML = 'Google Sync not configured';
-    actions.innerHTML = '<button class="gsync-btn" onclick="openSetup()">⚙ Setup</button>';
-  } else if (state === 'ready') {
-    label.innerHTML = 'Google Sync ready — sign in to sync';
-    actions.innerHTML = '<button class="gsync-btn" onclick="openSetup()">⚙ Setup</button>' +
-      '<button class="gsync-btn primary" onclick="googleSignIn()"><svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sign in with Google</button>';
-  } else if (state === 'connected') {
-    dot.classList.add('connected');
-    label.innerHTML = 'Synced as <strong>' + (email || '') + '</strong>';
-    actions.innerHTML =
-      '<button class="gsync-btn primary" onclick="syncToSheets()" id="btn-push">⬆ Push to Sheets</button>' +
-      '<button class="gsync-btn" onclick="pullFromSheets()" id="btn-pull">⬇ Pull from Sheets</button>' +
-      '<button class="gsync-btn danger" onclick="googleSignOut()">Sign out</button>';
-  } else if (state === 'syncing') {
-    dot.classList.add('syncing');
-    label.innerHTML = 'Syncing… please wait';
-    actions.innerHTML = '<button class="gsync-btn" disabled><span class="spin">↻</span> Syncing</button>';
-  } else if (state === 'error') {
-    dot.classList.add('error');
-    label.innerHTML = 'Sync error — check config';
-    actions.innerHTML = '<button class="gsync-btn" onclick="openSetup()">⚙ Setup</button>' +
-      (gsConfig ? '<button class="gsync-btn primary" onclick="googleSignIn()">Retry</button>' : '');
-  }
-}
-
-// ---- Sheets API helpers ----
-async function sheetsRequest(method, path, body) {
-  const res = await fetch('https://sheets.googleapis.com/v4/spreadsheets' + path, {
-    method,
-    headers: { Authorization: 'Bearer ' + gsToken, 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error((err.error && err.error.message) || res.statusText);
-  }
-  return res.json();
-}
-
-async function driveRequest(method, path, body) {
-  const res = await fetch('https://www.googleapis.com/drive/v3' + path, {
-    method,
-    headers: { Authorization: 'Bearer ' + gsToken, 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined
-  });
-  if (!res.ok) throw new Error(res.statusText);
-  return res.json();
-}
-
-// Ensure spreadsheet exists; returns sheetId
-async function ensureSheet() {
-  if (gsConfig.sheetId) return gsConfig.sheetId;
-  // Create new spreadsheet
-  const newSheet = await sheetsRequest('POST', '', {
-    properties: { title: 'Takusu Warranty Tracker' },
-    sheets: [{ properties: { title: SHEET_NAME } }]
-  });
-  gsConfig.sheetId = newSheet.spreadsheetId;
-  localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(gsConfig));
-  return gsConfig.sheetId;
-}
-
-async function ensureHeaders(sheetId) {
-  const res = await sheetsRequest('GET', '/' + sheetId + '/values/' + SHEET_NAME + '!A1:Z1');
-  const row = (res.values && res.values[0]) || [];
-  if (row[0] !== 'id') {
-    await sheetsRequest('PUT', '/' + sheetId + '/values/' + SHEET_NAME + '!A1?valueInputOption=RAW', {
-      values: [SHEET_HEADERS]
-    });
-  }
-}
-
-// ---- Auto Sync ----
-async function autoSync(action) {
-  if (!gsToken) return; // not connected, skip silently
-  if (gsSyncing) return;
-  // Small delay so toast from save/delete shows first
-  setTimeout(async function() {
-    try {
-      gsSyncing = true;
-      // show syncing dot quietly (don't overwrite current UI state labels)
-      const dot = document.getElementById('gsync-dot');
-      dot.className = 'gsync-dot syncing';
-      const sheetId = await ensureSheet();
-      await ensureHeaders(sheetId);
-      await sheetsRequest('POST', '/' + sheetId + '/values/' + SHEET_NAME + '!A2:Z:clear', null);
-      if (data.length) {
-        const rows = data.map(w => SHEET_HEADERS.map(k => w[k] || ''));
-        await sheetsRequest('PUT', '/' + sheetId + '/values/' + SHEET_NAME + '!A2?valueInputOption=RAW', { values: rows });
-      }
-      toast('☁️ Auto-synced to Google Sheets', 'ok');
-      dot.className = 'gsync-dot connected';
-    } catch(e) {
-      toast('Auto-sync failed: ' + e.message, 'err');
-      document.getElementById('gsync-dot').className = 'gsync-dot error';
-    } finally {
-      gsSyncing = false;
-    }
-  }, 600);
-}
-
-// ---- Push ----
-async function syncToSheets() {
-  if (!gsToken) { googleSignIn(); return; }
-  if (gsSyncing) return;
-  gsSyncing = true;
-  updateSyncUI('syncing');
-  try {
-    const sheetId = await ensureSheet();
-    await ensureHeaders(sheetId);
-    // Clear data rows then rewrite
-    await sheetsRequest('POST', '/' + sheetId + '/values/' + SHEET_NAME + '!A2:Z:clear', null);
-    if (data.length) {
-      const rows = data.map(w => SHEET_HEADERS.map(k => w[k] || ''));
-      await sheetsRequest('PUT', '/' + sheetId + '/values/' + SHEET_NAME + '!A2?valueInputOption=RAW', {
-        values: rows
-      });
-    }
-    toast('✅ Pushed ' + data.length + ' warranties to Google Sheets', 'ok');
-    updateSyncUI('connected', null);
-    // Re-show email
-    fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: 'Bearer ' + gsToken }})
-      .then(r => r.json()).then(i => updateSyncUI('connected', i.email)).catch(() => updateSyncUI('connected'));
-  } catch(e) {
-    toast('Push failed: ' + e.message, 'err');
-    updateSyncUI('error');
-  } finally { gsSyncing = false; }
-}
-
-// ---- Pull ----
-async function pullFromSheets() {
-  if (!gsToken) { googleSignIn(); return; }
-  if (gsSyncing) return;
-  if (!confirm('Pull from Google Sheets? This will OVERWRITE your local data.')) return;
-  gsSyncing = true;
-  updateSyncUI('syncing');
-  try {
-    const sheetId = await ensureSheet();
-    const res = await sheetsRequest('GET', '/' + sheetId + '/values/' + SHEET_NAME + '!A1:Z');
-    const rows = (res.values || []);
-    if (rows.length < 2) { toast('Sheet is empty — nothing to pull', 'ok'); updateSyncUI('connected'); return; }
-    const headers = rows[0];
-    const pulled = rows.slice(1).map(row => {
-      const obj = {};
-      headers.forEach((h, i) => { obj[h] = row[i] || ''; });
-      if (!obj.id) obj.id = crypto.randomUUID();
-      return obj;
-    });
-    data = pulled;
-    localStorage.setItem('takusu_w', JSON.stringify(data));
-    renderAll();
-    toast('⬇ Pulled ' + data.length + ' warranties from Google Sheets', 'ok');
-    fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: 'Bearer ' + gsToken }})
-      .then(r => r.json()).then(i => updateSyncUI('connected', i.email)).catch(() => updateSyncUI('connected'));
-  } catch(e) {
-    toast('Pull failed: ' + e.message, 'err');
-    updateSyncUI('error');
-  } finally { gsSyncing = false; }
-}
-
-// Init on load
-window.addEventListener('load', function() {
-  setTimeout(function() {
-    if (gsConfig) initGoogleClient();
-    else updateSyncUI('idle');
-  }, 800);
-});
 
 </script>
 </body>
